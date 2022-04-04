@@ -19,12 +19,16 @@ const speed = 1
 var starter = parseInt(document.getElementById("hue").value)
 var colors = [starter]
 var range = parseInt(document.getElementById("step").value)
+var common = parseInt(document.getElementById("common").value)
+var current = 0
 function animate() {
   requestAnimationFrame(animate)
+  current += 1
   starter = parseInt(document.getElementById("hue").value)
   range = parseInt(document.getElementById("step").value)
   threshhold = parseInt(document.getElementById("thresh").value)
   background = [parseInt(document.getElementById("background").value), parseInt(document.getElementById("sat").value), 1/parseInt(document.getElementById("bloom").value)]
+  common = parseInt(document.getElementById("common").value)
   ctx.fillStyle = `hsla(${background[0]}, 50%, ${background[1]}%, ${background[2]})`
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   dots.forEach((dot, index) => {
@@ -56,7 +60,9 @@ function animate() {
   const newS = Math.random()*speed
   const negative = Math.random() < 0.5 ? -1 : 1
   const negative2 = Math.random() < 0.5 ? -1 : 1
-  dots.push([Math.random()*canvas.width, Math.random()*canvas.height, coordinates => [coordinates[0] + negative*newS, coordinates[1] + negative2*Math.sqrt(1 - newS**2)]])
+  if (current % common == 0) {
+    dots.push([Math.random()*canvas.width, Math.random()*canvas.height, coordinates => [coordinates[0] + negative*newS, coordinates[1] + negative2*Math.sqrt(1 - newS**2)]])
+  }
   colors.push(starter)
 }
 
