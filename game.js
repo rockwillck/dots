@@ -14,7 +14,7 @@ document.getElementById("download").addEventListener('click', function(e) {
 function resized() {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  ctx.fillStyle = `rgba(${background[0]}, ${background[1]}, ${background[2]}, 1)`
+  ctx.fillStyle = `hsla(${background[0]}, 50%, ${background[1]}%, 1)`
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 }
 
