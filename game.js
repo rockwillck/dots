@@ -27,7 +27,7 @@ const speed = 1
 var starter = parseInt(document.getElementById("hue").value)
 var colors = [starter]
 var range = parseInt(document.getElementById("step").value)
-var common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value)
+var common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value) + 1
 var current = 0
 function animate() {
   requestAnimationFrame(animate)
@@ -36,7 +36,7 @@ function animate() {
   range = parseInt(document.getElementById("step").value)
   threshhold = parseInt(document.getElementById("thresh").value)
   background = [parseInt(document.getElementById("background").value), parseInt(document.getElementById("sat").value), 1/parseInt(document.getElementById("bloom").value)]
-  common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value)
+  common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value) + 1
   ctx.fillStyle = `hsla(${background[0]}, 50%, ${background[1]}%, ${background[2]})`
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   dots.forEach((dot, index) => {
