@@ -3,6 +3,14 @@ var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
+document.getElementById("download").addEventListener('click', function(e) {
+  const link = document.createElement('a');
+  link.download = 'download.png';
+  link.href = canvas.toDataURL();
+  link.click();
+  link.delete;
+});
+
 function resized() {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
