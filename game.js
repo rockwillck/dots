@@ -22,12 +22,12 @@ var background = [parseInt(document.getElementById("background").value), parseIn
 ctx.fillStyle = `rgba(${background[0]}, ${background[1]}, ${background[2]}, 1)`
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 let dots = [[0, 0, coordinates => [coordinates[0] + speed, coordinates[1] + speed]]]
-var threshhold = parseInt(document.getElementById("thresh").max) - parseInt(document.getElementById("thresh").value)
+var threshhold = parseInt(document.getElementById("thresh").value)
 const speed = 1
 var starter = parseInt(document.getElementById("hue").value)
 var colors = [starter]
 var range = parseInt(document.getElementById("step").value)
-var common = parseInt(document.getElementById("common").value)
+var common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value)
 var current = 0
 function animate() {
   requestAnimationFrame(animate)
