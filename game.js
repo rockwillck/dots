@@ -18,25 +18,36 @@ function resized() {
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 }
 
+window.addEventListener("click", function(event) {
+  console.log(event.clientX, event.clientY)
+  clicks.push([event.clientX, event.clientY])
+});
+
 var background = [parseInt(document.getElementById("background").value), parseInt(document.getElementById("sat").value), 1/parseInt(document.getElementById("bloom").value)]
 ctx.fillStyle = `rgba(${background[0]}, ${background[1]}, ${background[2]}, 1)`
 ctx.fillRect(0, 0, canvas.width, canvas.height)
-let dots = [[0, 0, coordinates => [coordinates[0] + speed, coordinates[1] + speed]]]
+let dots = []
 var threshhold = parseInt(document.getElementById("thresh").value)
-const speed = 1
+var speed = parseInt(document.getElementById("speed").value)/100
 var starter = parseInt(document.getElementById("hue").value)
 var colors = [starter]
 var range = parseInt(document.getElementById("step").value)
 var common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value) + 1
 var current = 0
+var lastUpdate = Date.now();
+var clicks = []
 function animate() {
   requestAnimationFrame(animate)
+  var now = Date.now();
+  var dt = now - lastUpdate;
+  lastUpdate = now;
   current += 1
   starter = parseInt(document.getElementById("hue").value)
   range = parseInt(document.getElementById("step").value)
   threshhold = parseInt(document.getElementById("thresh").value)
   background = [parseInt(document.getElementById("background").value), parseInt(document.getElementById("sat").value), 1/parseInt(document.getElementById("bloom").value)]
   common = parseInt(document.getElementById("common").max) - parseInt(document.getElementById("common").value) + 1
+  speed = parseInt(document.getElementById("speed").value)/100
   ctx.fillStyle = `hsla(${background[0]}, 50%, ${background[1]}%, ${background[2]})`
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   dots.forEach((dot, index) => {
@@ -65,13 +76,22 @@ function animate() {
     }
     colors[index] = starter
   })
-  const newS = Math.random()*speed
-  const negative = Math.random() < 0.5 ? -1 : 1
-  const negative2 = Math.random() < 0.5 ? -1 : 1
+  let newS = Math.random()
+  let negative = Math.random() < 0.5 ? -1 : 1
+  let negative2 = Math.random() < 0.5 ? -1 : 1
   if (current % common == 0) {
-    dots.push([Math.random()*canvas.width, Math.random()*canvas.height, coordinates => [coordinates[0] + negative*newS, coordinates[1] + negative2*Math.sqrt(1 - newS**2)]])
+    dots.push([Math.random()*canvas.width, Math.random()*canvas.height, coordinates => [coordinates[0] + negative*newS*speed*dt, coordinates[1] + negative2*dt*speed*Math.sqrt(1 - (newS)**2)]])
   }
   colors.push(starter)
+  
+  clicks.forEach((click, index) => {
+    newS = Math.random()
+    negative = Math.random() < 0.5 ? -1 : 1
+    negative2 = Math.random() < 0.5 ? -1 : 1
+    dots.push([click[0], click[1], coordinates => [coordinates[0] + negative*newS*speed*dt, coordinates[1] + negative2*dt*speed*Math.sqrt(1 - (newS)**2)]])
+    colors.push(starter)
+    clicks.splice(index, 1)
+  })
 }
 
 animate()
